@@ -21,15 +21,16 @@ import frost_sta_client.model.ext.entity_list
 import logging
 import requests
 from requests.exceptions import JSONDecodeError
+from typing import Dict
 
 
 class Query:
-    def __init__(self, service, entity, entitytype_plural, entity_class, parent):
+    def __init__(self, service, entity, entitytype_plural, entity_class, parent, params: Dict[str, str] = {}):
         self.service = service
         self.entity = entity
         self.entitytype_plural = entitytype_plural
         self.entity_class = entity_class
-        self.params = {}
+        self.params = self.assert_params_keys_format(params)
         self.parent = parent
 
     @property
@@ -85,6 +86,16 @@ class Query:
     @parent.setter
     def parent(self, value):
         self._parent = value
+
+    @staticmethod
+    def assert_params_keys_format(params: Dict[str, str]) -> Dict[str, str]:
+        params_out = params.copy()
+        keys_to_assert = ['count', 'top', 'skip', 'select', 'filter', 'orderby', 'expand']
+        for k, v in params.items():
+            if k in keys_to_assert:
+                params_out["$" + k] = v
+                params_out.pop(k)
+        return params_out
 
     def remove_all_params(self, key):
         self.params.pop(key, None)
