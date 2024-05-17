@@ -131,7 +131,7 @@ class Observation(entity.Entity):
     @parameters.setter
     def parameters(self, values):
         if values is None:
-            self._parameters = None
+            self._parameters = {}
             return
         if not isinstance(values, dict):
             raise ValueError('parameters should be of type dict!')

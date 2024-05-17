@@ -93,7 +93,7 @@ class Thing(entity.Entity):
     @properties.setter
     def properties(self, value):
         if value is None:
-            self._properties = None
+            self._properties = {}
             return
         if not isinstance(value, dict):
             raise ValueError('properties should be of type dict!')

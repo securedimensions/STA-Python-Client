@@ -107,7 +107,7 @@ class Location(entity.Entity):
     @properties.setter
     def properties(self, values):
         if values is None:
-            self._properties = None
+            self._properties = {}
             return
         if not isinstance(values, dict):
             raise ValueError('properties should be of type dict!')

@@ -69,7 +69,7 @@ class Task(entity.Entity):
     @tasking_capability.setter
     def tasking_capability(self, value):
         if value is None:
-            self._tasking_capability = None
+            self._tasking_capability = {}
             return
         if not isinstance(value, tasking_capability.TaskingCapability):
             raise ValueError('tasking capability should be of type TaskingCapability!')
