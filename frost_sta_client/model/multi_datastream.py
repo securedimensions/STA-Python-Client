@@ -29,7 +29,7 @@ from .ext import entity_list
 from .ext import entity_type
 
 import geojson.geometry
-
+import numpy, datetime
 
 class MultiDatastream(entity.Entity):
     def __init__(self,
@@ -260,15 +260,15 @@ class MultiDatastream(entity.Entity):
             return False
         if self.observation_type != other.observation_type:
             return False
-        if self.observed_area != other.observation_area:
+        if self.observed_area != other.observed_area:
             return False
         if self.properties != other.properties:
             return False
-        if self.result_time != other.result_time:
+        if self.result_time is not None and other .result_time is not None and datetime.fromisoformat(self.result_time) != datetime.fromisoformat(other.result_time):
             return False
-        if self.unit_of_measurements != other.unit_of_measurements:
+        if not numpy.array_equiv(self.unit_of_measurements,other.unit_of_measurements):
             return False
-        if self.multi_observation_data_types != other.multi_observation_data_types:
+        if not numpy.array_equiv(self.multi_observation_data_types, other.multi_observation_data_types):
             return False
         return True
 
@@ -324,7 +324,7 @@ class MultiDatastream(entity.Entity):
                 and isinstance(state['unitOfMeasurements'], list):
             self.unit_of_measurements = []
             for value in state['unitOfMeasurements']:
-                self.unit_of_measurements.append(value)
+                self.unit_of_measurements.append(frost_sta_client.UnitOfMeasurement(name=value['name'], symbol=value['symbol'], definition=value['definition']))
         if state.get('multiObservationDataTypes', None) is not None \
                 and isinstance(state['multiObservationDataTypes'], list):
             self.multi_observation_data_types = []
