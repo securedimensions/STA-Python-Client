@@ -215,7 +215,7 @@ class Location(entity.Entity):
         if self.properties is not None and self.properties != {}:
             data['properties'] = self.properties
         if self.location is not None:
-            data['location'] = self.location
+            data['location'] = json.loads(geojson.dumps(self.location))
         if self.things is not None:
             data['Things'] = self.things
         if self.historical_locations is not None and len(self.historical_locations.entities) > 0:
