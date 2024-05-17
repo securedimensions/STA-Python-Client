@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import json
-import datetime
+from datetime import datetime
 
 import frost_sta_client.model
 from . import entity
@@ -190,11 +190,11 @@ class Observation(entity.Entity):
             return False
         if self.result != other.result:
             return False
-        if self.phenomenon_time != other.phenomenon_time:
+        if datetime.fromisoformat(self.phenomenon_time) != datetime.fromisoformat(other.phenomenon_time):
             return False
-        if self.result_time != other.result_time:
+        if self.result_time is not None and other.result_time is not None and datetime.fromisoformat(self.result_time) != datetime.fromisoformat(other.result_time):
             return False
-        if self.valid_time != other.valid_time:
+        if self.valid_time is not None and other.valid_time is not None and datetime.fromisoformat(self.valid_time) != datetime.fromisoformat(other.valid_time):
             return False
         if self.parameters != other.parameters:
             return False
