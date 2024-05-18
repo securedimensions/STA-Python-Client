@@ -42,8 +42,6 @@ class Location(entity.Entity):
                  historical_locations=None,
                  **kwargs):
         super().__init__(**kwargs)
-        if properties is None:
-            properties = {}
         self.name = name
         self.description = description
         self.encoding_type = encoding_type
@@ -54,7 +52,7 @@ class Location(entity.Entity):
 
     def __new__(cls, *args, **kwargs):
         new_loc = super().__new__(cls)
-        attributes = {'_id': None, '_name': '', '_description': '', '_properties': {}, '_encodingType': '',
+        attributes = {'_id': None, '_name': '', '_description': '', '_properties': None, '_encodingType': '',
                       '_location': None, '_things': None, '_historical_locations': None, '_self_link': '',
                       '_service': None}
         for key, value in attributes.items():
@@ -107,7 +105,7 @@ class Location(entity.Entity):
     @properties.setter
     def properties(self, values):
         if values is None:
-            self._properties = {}
+            self._properties = None
             return
         if not isinstance(values, dict):
             raise ValueError('properties should be of type dict!')
@@ -212,7 +210,7 @@ class Location(entity.Entity):
             data['description'] = self.description
         if self.encoding_type is not None and self.encoding_type != '':
             data['encodingType'] = self.encoding_type
-        if self.properties is not None and self.properties != {}:
+        if self.properties is not None:
             data['properties'] = self.properties
         if self.location is not None:
             data['location'] = json.loads(geojson.dumps(self.location))
@@ -227,7 +225,7 @@ class Location(entity.Entity):
         self.name = state.get("name", None)
         self.description = state.get("description", None)
         self.encoding_type = state.get("encodingType", None)
-        self.properties = state.get("properties", {})
+        self.properties = state.get("properties", None)
         if state.get("Things", None) is not None:
             entity_class = entity_type.EntityTypes['Thing']['class']
             self.things = utils.transform_json_to_entity_list(state['Things'], entity_class)

@@ -35,8 +35,6 @@ class FeatureOfInterest(entity.Entity):
                  observations=None,
                  **kwargs):
         super().__init__(**kwargs)
-        if properties is None:
-            properties = {}
         self.name = name
         self.description = description
         self.encoding_type = encoding_type
@@ -46,7 +44,7 @@ class FeatureOfInterest(entity.Entity):
 
     def __new__(cls, *args, **kwargs):
         new_foi = super().__new__(cls)
-        attributes = {'_id': None, '_name': '', '_description': '', '_properties': {}, '_encoding_type': '',
+        attributes = {'_id': None, '_name': '', '_description': '', '_properties': None, '_encoding_type': '',
                       '_feature': '', '_observations': None, '_self_link': '', '_service': None}
         for key, value in attributes.items():
             new_foi.__dict__[key] = value
@@ -85,7 +83,7 @@ class FeatureOfInterest(entity.Entity):
     @properties.setter
     def properties(self, value):
         if value is None:
-            self._properties = {}
+            self._properties = None
             return
         if not isinstance(value, dict):
             raise ValueError('properties should be of type dict!')
@@ -172,7 +170,7 @@ class FeatureOfInterest(entity.Entity):
             data['name'] = self.name
         if self.description is not None and self.description != '':
             data['description'] = self.description
-        if self.properties is not None and self.properties != {}:
+        if self.properties is not None:
             data['properties'] = self.properties
         if self.encoding_type is not None and self.encoding_type != '':
             data['encodingType'] = self.encoding_type
@@ -186,7 +184,7 @@ class FeatureOfInterest(entity.Entity):
         super().__setstate__(state)
         self.name = state.get("name", None)
         self.description = state.get("description", None)
-        self.properties = state.get("properties", {})
+        self.properties = state.get("properties", None)
         self.encoding_type = state.get("encodingType", None)
         self.feature = state.get("feature", None)
         if state.get("Observations", None) is not None and isinstance(state["Observations"], list):

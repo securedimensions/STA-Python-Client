@@ -42,8 +42,6 @@ class Observation(entity.Entity):
                  feature_of_interest=None,
                  **kwargs):
         super().__init__(**kwargs)
-        if parameters is None:
-            parameters = {}
         self.phenomenon_time = phenomenon_time
         self.result = result
         self.result_time = result_time
@@ -57,7 +55,7 @@ class Observation(entity.Entity):
     def __new__(cls, *args, **kwargs):
         new_observation = super().__new__(cls)
         attributes = {'_id': None, '_phenomenon_time': None, '_result': None, '_result_time': None,
-                      '_result_quality': None, '_valid_time': None, '_parameters': {}, '_datastream': None,
+                      '_result_quality': None, '_valid_time': None, '_parameters': None, '_datastream': None,
                       '_multi_datastream': None, '_feature_of_interest': None, '_self_link': '', '_service': None}
         for key, value in attributes.items():
             new_observation.__dict__[key] = value
@@ -207,7 +205,7 @@ class Observation(entity.Entity):
 
     def __getstate__(self):
         data = super().__getstate__()
-        if self.parameters is not None and self.parameters != {}:
+        if self.parameters is not None:
             data['parameters'] = self.parameters
         if self.result is not None:
             data['result'] = self.result
@@ -229,7 +227,7 @@ class Observation(entity.Entity):
 
     def __setstate__(self, state):
         super().__setstate__(state)
-        self.parameters = state.get("parameters", {})
+        self.parameters = state.get("parameters", None)
         self.result = state.get("result", None)
         self.result_quality = state.get("resultQuality", None)
         self.phenomenon_time = state.get("phenomenonTime", None)

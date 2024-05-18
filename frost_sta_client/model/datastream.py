@@ -63,8 +63,6 @@ class Datastream(entity.Entity):
 
         """
         super().__init__(**kwargs)
-        if properties is None:
-            properties = {}
         self.name = name
         self.description = description
         self.observation_type = observation_type
@@ -81,7 +79,7 @@ class Datastream(entity.Entity):
 
     def __new__(cls, *args, **kwargs):
         new_datastream = super().__new__(cls)
-        attributes = dict(_id=None, _name='', _description='', _properties={}, _observation_type='',
+        attributes = dict(_id=None, _name='', _description='', _properties=None, _observation_type='',
                           _unit_of_measurement=None, _observed_area=None, _phenomenon_time=None, _result_time=None,
                           _thing=None, _sensor=None, _observed_property=None, _observations=None, _self_link='',
                           _service=None)
@@ -167,7 +165,7 @@ class Datastream(entity.Entity):
     @properties.setter
     def properties(self, value):
         if value is None:
-            self._properties = {}
+            self._properties = None
             return
         if not isinstance(value, dict):
             raise ValueError('properties should be of type dict')
@@ -284,7 +282,7 @@ class Datastream(entity.Entity):
             data['description'] = self.description
         if self.observation_type is not None and self.observation_type != '':
             data['observationType'] = self.observation_type
-        if self.properties is not None and self.properties != {}:
+        if self.properties is not None:
             data['properties'] = self.properties
         if self.unit_of_measurement is not None:
             data['unitOfMeasurement'] = self.unit_of_measurement
@@ -309,7 +307,7 @@ class Datastream(entity.Entity):
         self.name = state.get("name", None)
         self.description = state.get("description", None)
         self.observation_type = state.get("observationType", None)
-        self.properties = state.get("properties", {})
+        self.properties = state.get("properties", None)
         if state.get("unitOfMeasurement", None) is not None:
             self.unit_of_measurement = frost_sta_client.model.ext.unitofmeasurement.UnitOfMeasurement()
             self.unit_of_measurement.__setstate__(state["unitOfMeasurement"])

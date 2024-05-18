@@ -36,8 +36,6 @@ class Actuator(entity.Entity):
                  properties=None,
                  **kwargs):
         super().__init__(**kwargs)
-        if properties is None:
-            properties = {}
         self.name = name
         self.description = description
         self.encoding_type = encoding_type
@@ -47,7 +45,7 @@ class Actuator(entity.Entity):
 
     def __new__(cls, *args, **kwargs):
         new_actuator = super().__new__(cls)
-        attributes = {'_id': None, '_name': '', '_description': '', '_properties': {}, '_encoding_type': '',
+        attributes = {'_id': None, '_name': '', '_description': '', '_properties': None, '_encoding_type': '',
                       '_metadata': '', '_self_link': '', '_service': None, '_tasking_capabilities': None}
         for key, value in attributes.items():
             new_actuator.__dict__[key] = value
@@ -104,7 +102,7 @@ class Actuator(entity.Entity):
     @properties.setter
     def properties(self, value):
         if value is None:
-            self._properties = {}
+            self._properties = None
             return
         if not isinstance(value, dict):
             raise ValueError('properties should be of type dict!')
@@ -165,7 +163,7 @@ class Actuator(entity.Entity):
             data['encodingType'] = self.encoding_type
         if self.metadata is not None:
             data['metadata'] = self.metadata
-        if self.properties is not None and self.properties != {}:
+        if self.properties is not None:
             data['properties'] = self.properties
         if self.tasking_capabilities is not None and len(self.tasking_capabilities.entities) > 0:
             data['taskingCapabilities'] = self.tasking_capabilities.__getstate__()

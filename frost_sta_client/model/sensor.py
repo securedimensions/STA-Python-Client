@@ -38,8 +38,6 @@ class Sensor(entity.Entity):
                  multi_datastreams=None,
                  **kwargs):
         super().__init__(**kwargs)
-        if properties is None:
-            properties = {}
         self.name = name
         self.description = description
         self.properties = properties
@@ -50,7 +48,7 @@ class Sensor(entity.Entity):
 
     def __new__(cls, *args, **kwargs):
         new_sensor = super().__new__(cls)
-        attributes = {'_id': None, '_name': '', '_description': '', '_properties': {}, '_encoding_type': '',
+        attributes = {'_id': None, '_name': '', '_description': '', '_properties': None, '_encoding_type': '',
                       '_metadata': '', '_datastreams': None, '_multi_datastreams': None, '_self_link': '',
                       '_service': None}
         for key, value in attributes.items():
@@ -84,7 +82,7 @@ class Sensor(entity.Entity):
     @properties.setter
     def properties(self, value):
         if value is None:
-            self._properties = {}
+            self._properties = None
             return
         if not isinstance(value, dict):
             raise ValueError('properties should be of type dict!')
@@ -191,7 +189,7 @@ class Sensor(entity.Entity):
             data['name'] = self._name
         if self.description is not None and self.description != '':
             data['description'] = self._description
-        if self.properties is not None and self.properties != {}:
+        if self.properties is not None:
             data['properties'] = self._properties
         if self.encoding_type is not None and self.encoding_type != '':
             data['encodingType'] = self._encoding_type
@@ -209,7 +207,7 @@ class Sensor(entity.Entity):
         self.description = state.get('description', '')
         self.encoding_type = state.get('encodingType', '')
         self.metadata = state.get('metadata', '')
-        self.properties = state.get('properties', {})
+        self.properties = state.get('properties', None)
         if state.get('Datastreams', None) is not None:
             entity_class = entity_type.EntityTypes['Datastream']['class']
             self.datastreams = utils.transform_json_to_entity_list(state['Datastreams'], entity_class)

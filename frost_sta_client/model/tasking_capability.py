@@ -38,10 +38,6 @@ class TaskingCapability(entity.Entity):
                  actuator=None,
                  **kwargs):
         super().__init__(**kwargs)
-        if tasking_parameters is None:
-            tasking_parameters = {}
-        if properties is None:
-            properties = {}
         self.name = name
         self.description = description
         self.tasking_parameters = tasking_parameters
@@ -52,7 +48,7 @@ class TaskingCapability(entity.Entity):
 
     def __new__(cls, *args, **kwargs):
         new_tc = super().__new__(cls)
-        attributes = {'_id': None, '_name': '', '_description': '', '_properties': {}, '_tasking_parameters': {},
+        attributes = {'_id': None, '_name': '', '_description': '', '_properties': None, '_tasking_parameters': None,
                       '_tasks': None, '_thing': None, '_actuator': None, '_self_link': '', '_service': None}
         for key, value in attributes.items():
             new_tc.__dict__[key] = value
@@ -184,7 +180,7 @@ class TaskingCapability(entity.Entity):
             data['name'] = self.name
         if self.description is not None and self.description != '':
             data['description'] = self.description
-        if self.tasking_parameters is not None and self.tasking_parameters != {}:
+        if self.tasking_parameters is not None:
             data['taskingParameters'] = self.tasking_parameters
         if self.properties is not None and self.properties != {}:
             data['properties'] = self.properties
@@ -200,8 +196,8 @@ class TaskingCapability(entity.Entity):
         super().__setstate__(state)
         self.name = state.get('name', '')
         self.description = state.get('description', '')
-        self.tasking_parameters = state.get('taskingParameters', {})
-        self.properties = state.get('properties', {})
+        self.tasking_parameters = state.get('taskingParameters', None)
+        self.properties = state.get('properties', None)
         if state.get('Tasks', None) is not None:
             entity_class = entity_type.EntityTypes['Task']['class']
             self.tasks = utils.transform_json_to_entity_list(state['Tasks'], entity_class)

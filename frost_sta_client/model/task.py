@@ -30,15 +30,13 @@ class Task(entity.Entity):
                  tasking_capability=None,
                  **kwargs):
         super().__init__(**kwargs)
-        if tasking_parameters is None:
-            tasking_parameters = {}
         self.tasking_parameters = tasking_parameters
         self.creation_time = creation_time
         self.tasking_capability = tasking_capability
 
     def __new__(cls, *args, **kwargs):
         new_task = super().__new__(cls)
-        attributes = {'_id': None, '_tasking_parameters': {}, '_creation_time': None, '_tasking_capability': None,
+        attributes = {'_id': None, '_tasking_parameters': None, '_creation_time': None, '_tasking_capability': None,
                       '_self_link': '', '_service': None}
         for key, value in attributes.items():
             new_task.__dict__[key] = value
@@ -93,7 +91,7 @@ class Task(entity.Entity):
 
     def __getstate__(self):
         data = super().__getstate__()
-        if self.tasking_parameters is not None and self.tasking_parameters != {}:
+        if self.tasking_parameters is not None:
             data['taskingParameters'] = self.tasking_parameters
         if self.creation_time is not None:
             data['creationTime'] = utils.parse_datetime(self.creation_time)
@@ -103,7 +101,7 @@ class Task(entity.Entity):
 
     def __setstate__(self, state):
         super().__setstate__(state)
-        self.tasking_parameters = state.get('taskingParameters', {})
+        self.tasking_parameters = state.get('taskingParameters', None)
         self.creation_time = state.get('creationTime', None)
         if state.get('taskingCapability', None) is not None:
             self.tasking_capability = frost_sta_client.model.tasking_capability.TaskingCapability()

@@ -29,7 +29,8 @@ from .ext import entity_list
 from .ext import entity_type
 
 import geojson.geometry
-import numpy, datetime
+import numpy
+from datetime import datetime
 
 class MultiDatastream(entity.Entity):
     def __init__(self,
@@ -48,8 +49,6 @@ class MultiDatastream(entity.Entity):
                  observations=None,
                  **kwargs):
         super().__init__(**kwargs)
-        if properties is None:
-            properties = {}
         if multi_observation_data_types is None:
             multi_observation_data_types = []
         self.name = name
@@ -68,7 +67,7 @@ class MultiDatastream(entity.Entity):
 
     def __new__(cls, *args, **kwargs):
         new_mds = super().__new__(cls)
-        attributes = dict(_id=None, _name='', _description='', _properties={}, _observation_type='', _multi_observation_data_types=[],
+        attributes = dict(_id=None, _name='', _description='', _properties=None, _observation_type='', _multi_observation_data_types=[],
                           _unit_of_measurements=[], _observed_area=None, _phenomenon_time=None, _result_time=None,
                           _thing=None, _sensor=None, _observed_properties=None, _observations=None, _self_link='',
                           _service=None)
@@ -109,7 +108,7 @@ class MultiDatastream(entity.Entity):
     @properties.setter
     def properties(self, values):
         if values is None:
-            self._properties = {}
+            self._properties = None
             return
         if not isinstance(values, dict):
             raise ValueError('properties should be of type dict!')
@@ -263,12 +262,18 @@ class MultiDatastream(entity.Entity):
         if self.observed_area != other.observed_area:
             return False
         if self.properties != other.properties:
+            print(f"self: {self.properties}")
+            print(f"other: {other.properties}")
+            print('properties')
             return False
-        if self.result_time is not None and other .result_time is not None and datetime.fromisoformat(self.result_time) != datetime.fromisoformat(other.result_time):
+        if self.result_time is not None and other.result_time is not None and datetime.fromisoformat(self.result_time) != datetime.fromisoformat(other.result_time):
+            print('result_time')
             return False
         if not numpy.array_equiv(self.unit_of_measurements,other.unit_of_measurements):
+            print('unit_of_measurements')
             return False
         if not numpy.array_equiv(self.multi_observation_data_types, other.multi_observation_data_types):
+            print('multi_observation_data_types')
             return False
         return True
 
@@ -293,7 +298,7 @@ class MultiDatastream(entity.Entity):
             data['Thing'] = self.thing
         if self.sensor is not None:
             data['Sensor'] = self.sensor
-        if self.properties is not None and self.properties != {}:
+        if self.properties is not None:
             data['properties'] = self.properties
         if self.unit_of_measurements is not None and len(self.unit_of_measurements) > 0:
             data['unitOfMeasurements'] = self.unit_of_measurements

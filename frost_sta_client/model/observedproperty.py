@@ -36,8 +36,6 @@ class ObservedProperty(entity.Entity):
                  multi_datastreams=None,
                  **kwargs):
         super().__init__(**kwargs)
-        if properties is None:
-            properties = {}
         self.properties = properties
         self.name = name
         self.definition = definition
@@ -47,7 +45,7 @@ class ObservedProperty(entity.Entity):
 
     def __new__(cls, *args, **kwargs):
         new_observed_property = super().__new__(cls)
-        attributes = {'_id': None, '_name': '', '_definition': '', '_description': '',
+        attributes = {'_id': None, '_name': '', '_definition': '', '_description': '', '_properties': None,
                       '_datastreams': None, '_multi_datastreams': None, '_self_link': None, '_service': None}
         for key, value in attributes.items():
             new_observed_property.__dict__[key] = value
@@ -99,7 +97,7 @@ class ObservedProperty(entity.Entity):
     @properties.setter
     def properties(self, value):
         if value is None:
-            self._properties = {}
+            self._properties = None
             return
         if not isinstance(value, dict):
             raise ValueError('properties should be of type dict!')
@@ -181,7 +179,7 @@ class ObservedProperty(entity.Entity):
             data['description'] = self.description
         if self.definition is not None and self.definition != '':
             data['definition'] = self.definition
-        if self.properties is not None and self.properties != {}:
+        if self.properties is not None:
             data['properties'] = self.properties
         if self.datastreams is not None and len(self.datastreams.entities) > 0:
             data['Datastream'] = self.datastreams.__getstate__()
@@ -194,7 +192,7 @@ class ObservedProperty(entity.Entity):
         self.name = state.get("name", None)
         self.description = state.get("description", None)
         self.definition = state.get("definition", None)
-        self.properties = state.get("properties", {})
+        self.properties = state.get("properties", None)
         if state.get("Datastreams", None) is not None and isinstance(state["Datastreams"], list):
             entity_class = entity_type.EntityTypes['Datastream']['class']
             self.datastreams = utils.transform_json_to_entity_list(state['Datastreams'], entity_class)
