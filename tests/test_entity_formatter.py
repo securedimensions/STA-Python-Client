@@ -1,4 +1,4 @@
-import unittest
+import unittest, json
 from geojson import Point
 
 import frost_sta_client.model.location
@@ -27,11 +27,23 @@ class TestEntityFormatter(unittest.TestCase):
         self.assertDictEqual(exp_result, entity_json)
 
     def test_write_thing_completely_empty(self):
-        result = {}
+        result = {
+               '_datastreams': None,
+               '_description': '',
+               '_historical_locations': None,
+               '_id': None,
+               '_locations': None,
+               '_multi_datastreams': None,
+               '_name': '',
+               '_properties': None,
+               '_self_link': '',
+               '_service': None,
+               '_tasking_capabilities': None
+        }
 
         entity = frost_sta_client.model.thing.Thing()
-        entity_json = frost_sta_client.utils.transform_entity_to_json_dict(entity)
-        self.assertDictEqual(result, entity_json)
+        entity_dict = frost_sta_client.utils.transform_entity_to_json_dict(entity)
+        self.assertDictEqual(result, entity_dict)
 
     def test_write_thing_with_location(self):
         result = {'name': 'another nice thing',
@@ -40,7 +52,8 @@ class TestEntityFormatter(unittest.TestCase):
                       {
                           '@iot.id': 1,
                       }
-                  ]}
+                  ],
+                  'properties': {}}
         entity = frost_sta_client.model.thing.Thing()
         entity.name = 'another nice thing'
         entity.description = 'This thing has also a nice location'
