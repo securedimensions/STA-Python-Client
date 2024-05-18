@@ -14,6 +14,8 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from datetime import datetime
+
 import frost_sta_client.model
 from . import entity
 from . import location
@@ -93,7 +95,7 @@ class HistoricalLocation(entity.Entity):
     def __eq__(self, other):
         if not super().__eq__(other):
             return False
-        if self.time != other.time:
+        if self.time is not None and other.time is not None and datetime.fromisoformat(self.time) != datetime.fromisoformat(other.time):
             return False
         return True
 

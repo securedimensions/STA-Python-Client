@@ -262,18 +262,14 @@ class MultiDatastream(entity.Entity):
         if self.observed_area != other.observed_area:
             return False
         if self.properties != other.properties:
-            print(f"self: {self.properties}")
-            print(f"other: {other.properties}")
-            print('properties')
             return False
         if self.result_time is not None and other.result_time is not None and datetime.fromisoformat(self.result_time) != datetime.fromisoformat(other.result_time):
-            print('result_time')
+            return False
+        if self.phenomenon_time is not None and other.phenomenon_time is not None and datetime.fromisoformat(self.phenomenon_time) != datetime.fromisoformat(other.phenomenon_time):
             return False
         if not numpy.array_equiv(self.unit_of_measurements,other.unit_of_measurements):
-            print('unit_of_measurements')
             return False
         if not numpy.array_equiv(self.multi_observation_data_types, other.multi_observation_data_types):
-            print('multi_observation_data_types')
             return False
         return True
 
