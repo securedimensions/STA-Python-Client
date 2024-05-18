@@ -1,7 +1,11 @@
-jsonpickle<=2.2.0
+jsonpickle
 demjson3
 requests
 furl
 geojson
 jsonpatch
 python-dateutil
+numpy
+testcontainers
+sqlalchemy
+psycopg2
