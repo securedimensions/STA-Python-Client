@@ -171,8 +171,8 @@ class Actuator(entity.Entity):
 
     def __setstate__(self, state):
         super().__setstate__(state)
-        self.name = state.get("name", None)
-        self.description = state.get("description", None)
+        self.name = state.get("name", "")
+        self.description = state.get("description", "")
         self.encoding_type = state.get("encodingType", "")
         self.metadata = state.get("metadata", "")
         self.properties = state.get("properties", None)

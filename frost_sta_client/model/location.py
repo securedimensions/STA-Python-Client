@@ -222,9 +222,9 @@ class Location(entity.Entity):
 
     def __setstate__(self, state):
         super().__setstate__(state)
-        self.name = state.get("name", None)
-        self.description = state.get("description", None)
-        self.encoding_type = state.get("encodingType", None)
+        self.name = state.get("name", "")
+        self.description = state.get("description", "")
+        self.encoding_type = state.get("encodingType", "")
         self.properties = state.get("properties", None)
         if state.get("Things", None) is not None:
             entity_class = entity_type.EntityTypes['Thing']['class']

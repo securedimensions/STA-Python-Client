@@ -228,10 +228,10 @@ class Observation(entity.Entity):
     def __setstate__(self, state):
         super().__setstate__(state)
         self.parameters = state.get("parameters", None)
-        self.result = state.get("result", None)
+        self.result = state.get("result")
         self.result_quality = state.get("resultQuality", None)
-        self.phenomenon_time = state.get("phenomenonTime", None)
-        self.result_time = state.get("resultTime", None)
+        self.phenomenon_time = state.get("phenomenonTime")
+        self.result_time = state.get("resultTime")
         self.valid_time = state.get("validTime", None)
         if state.get('Datastream', None) is not None:
             self.datastream = frost_sta_client.model.datastream.Datastream()

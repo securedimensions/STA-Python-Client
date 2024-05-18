@@ -189,9 +189,9 @@ class ObservedProperty(entity.Entity):
 
     def __setstate__(self, state):
         super().__setstate__(state)
-        self.name = state.get("name", None)
-        self.description = state.get("description", None)
-        self.definition = state.get("definition", None)
+        self.name = state.get("name", "")
+        self.description = state.get("description", "")
+        self.definition = state.get("definition", "")
         self.properties = state.get("properties", None)
         if state.get("Datastreams", None) is not None and isinstance(state["Datastreams"], list):
             entity_class = entity_type.EntityTypes['Datastream']['class']

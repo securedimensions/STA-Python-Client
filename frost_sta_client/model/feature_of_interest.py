@@ -182,11 +182,11 @@ class FeatureOfInterest(entity.Entity):
 
     def __setstate__(self, state):
         super().__setstate__(state)
-        self.name = state.get("name", None)
-        self.description = state.get("description", None)
+        self.name = state.get("name", "")
+        self.description = state.get("description", "")
         self.properties = state.get("properties", None)
-        self.encoding_type = state.get("encodingType", None)
-        self.feature = state.get("feature", None)
+        self.encoding_type = state.get("encodingType", "")
+        self.feature = state.get("feature")
         if state.get("Observations", None) is not None and isinstance(state["Observations"], list):
             entity_class = entity_type.EntityTypes['Observation']['class']
             self.observations = utils.transform_json_to_entity_list(state['Observations'], entity_class)

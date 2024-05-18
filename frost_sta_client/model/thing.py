@@ -258,8 +258,8 @@ class Thing(entity.Entity):
 
     def __setstate__(self, state):
         super().__setstate__(state)
-        self.name = state.get("name", None)
-        self.description = state.get("description", None)
+        self.name = state.get("name", "")
+        self.description = state.get("description", "")
         self.properties = state.get("properties", None)
 
         if state.get("Locations", None) is not None and isinstance(state["Locations"], list):

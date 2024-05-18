@@ -312,9 +312,9 @@ class MultiDatastream(entity.Entity):
 
     def __setstate__(self, state):
         super().__setstate__(state)
-        self.name = state.get('name', None)
-        self.description = state.get('description', None)
-        self.observation_type = state.get('observationType', None)
+        self.name = state.get('name', "")
+        self.description = state.get('description', "")
+        self.observation_type = state.get('observationType', "")
         self.observation_area = state.get('observedArea', None)
         self.phenomenon_time = state.get('phenomenonTime', None)
         self.result_time = state.get('resultTime', None)
@@ -325,7 +325,7 @@ class MultiDatastream(entity.Entity):
         if state.get('Sensor', None) is not None:
             self.sensor = frost_sta_client.model.sensor.Sensor()
             self.sensor.__setstate__(state['Sensor'])
-        if state.get('unitOfMeasurements', None) is not None \
+        if state.get('unitOfMeasurements') is not None \
                 and isinstance(state['unitOfMeasurements'], list):
             self.unit_of_measurements = []
             for value in state['unitOfMeasurements']:
