@@ -72,8 +72,6 @@ class UnitOfMeasurement:
     def __eq__(self, other):
         if other is None:
             return False
-        if not isinstance(other, type(self)):
-            return False
         if id(self) == id(other):
             return True
         if self.name != other.name:
