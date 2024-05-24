@@ -8,5 +8,4 @@ This implementation is the base for the Python client [STAplus SensorThings API 
 * This implementation includes bugfixes for reported issues [SensorThingsAPI/Issues](https://github.com/FraunhoferIOSB/FROST-Python-Client/issues) 
 
 ## Installation via PyPi
-
-`
+Installation via pip: `pip install sd-frost-sta-client`
