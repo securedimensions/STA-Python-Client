@@ -1,5 +1,5 @@
 __title__ = 'sd-frost-sta-client'
-__version__ = '1.1.45'
+__version__ = '1.1.46'
 __license__ = 'LGPL3'
 __author__ = 'Andreas Matheus'
 __copyright__ = 'Secure Dimensions'
