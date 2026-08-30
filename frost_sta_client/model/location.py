@@ -52,7 +52,7 @@ class Location(entity.Entity):
 
     def __new__(cls, *args, **kwargs):
         new_loc = super().__new__(cls)
-        attributes = {'_id': None, '_name': '', '_description': '', '_properties': None, '_encodingType': '',
+        attributes = {'_id': None, '_name': '', '_description': '', '_properties': None, '_encoding_type': '',
                       '_location': None, '_things': None, '_historical_locations': None, '_self_link': '',
                       '_service': None}
         for key, value in attributes.items():

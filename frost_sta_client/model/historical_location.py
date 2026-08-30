@@ -42,7 +42,7 @@ class HistoricalLocation(entity.Entity):
 
     def __new__(cls, *args, **kwargs):
         new_h_loc = super().__new__(cls)
-        attributes = {'_id': None, '_location': None, '_time': None, '_thing': None, '_self_link': None,
+        attributes = {'_id': None, '_locations': None, '_time': None, '_thing': None, '_self_link': None,
                       '_service': None}
         for key, value in attributes.items():
             new_h_loc.__dict__[key] = value
